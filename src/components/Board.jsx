@@ -2,17 +2,25 @@ import React from 'react';
 
 class Board extends React.Component {
   render() {
-    const { board } = this.props;
+    const { board, play, resetGame } = this.props;
     return (
       <div className="board">
         {board.map((_, index,) => {
-          const choice = (board[index] === 'E') ? '' : board[index];
+          let option, choice, choose = '';
+          if (board[index] !== 'E') {
+            choice = board[index];
+            option = 'inactive';
+            choose = () => {console.log('not allowed')};
+          } else {
+            choose = (e, index) => play(e, index);
+          }
           return (
-            <div id={`${index}`} className={`box pos${index}`}>
-              {choice}
+            <div onClick={(e) => choose(e, index)} key={`${index}`}  id={`${index}`} className={`box pos${index} ${option}`}>
+              <span className="bt-choice">{choice}</span>
             </div>
           )}
         )}
+        <button onClick={resetGame}>Reset game</button>
       </div>
     );
   }
